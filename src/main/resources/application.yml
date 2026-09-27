@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: orderflow
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+  jpa:
+    # схемой владеет Flyway, Hibernate только проверяет, что она совпадает
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    locations: classpath:db/migration
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      # liveness и readiness — их дёргают оркестраторы и docker healthcheck
+      probes:
+        enabled: true
+      show-details: never
+
+logging:
+  level:
+    dev.orderflow: INFO

@@ -1,0 +1,16 @@
+# Тесты с базой запускаются, только если задан TEST_DATABASE_URL —
+# DSN к отдельной базе orderflow_test (её нужно создать один раз).
+# Без переменной такие тесты пропускаются, юнит-тесты идут всегда.
+spring:
+  datasource:
+    url: ${TEST_DATABASE_URL}
+    username: ${TEST_DATABASE_USER:postgres}
+    password: ${TEST_DATABASE_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    dev.orderflow: INFO
+    org.hibernate.SQL: WARN
