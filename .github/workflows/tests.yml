@@ -27,7 +27,9 @@ jobs:
           --health-retries 10
 
     env:
-      TEST_DATABASE_URL: jdbc:postgresql://postgres:ci_password@localhost:5432/orderflow_test
+      # логин и пароль — отдельными переменными: pgjdbc не разбирает их
+      # внутри JDBC URL и принимает за часть хоста
+      TEST_DATABASE_URL: jdbc:postgresql://localhost:5432/orderflow_test
       TEST_DATABASE_USER: postgres
       TEST_DATABASE_PASSWORD: ci_password
 
