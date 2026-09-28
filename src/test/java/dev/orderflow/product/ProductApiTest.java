@@ -2,12 +2,14 @@ package dev.orderflow.product;
 
 import dev.orderflow.ApiIntegrationTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@EnabledIfEnvironmentVariable(named = "TEST_DATABASE_URL", matches = ".+")
 class ProductApiTest extends ApiIntegrationTest {
 
 	@Test

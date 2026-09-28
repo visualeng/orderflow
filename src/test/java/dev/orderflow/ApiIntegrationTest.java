@@ -75,6 +75,17 @@ public abstract class ApiIntegrationTest {
 		return sku;
 	}
 
+	/** Создать заказ с ключом идемпотентности; состав задаётся картой sku → количество. */
+	protected Result givenOrder(String idempotencyKey, Map<String, Integer> items) throws Exception {
+		var body = Map.of("items", items.entrySet().stream()
+				.map(entry -> Map.of("sku", entry.getKey(), "qty", entry.getValue()))
+				.toList());
+		return exchange(
+				org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/orders")
+						.header("Idempotency-Key", idempotencyKey),
+				body);
+	}
+
 	protected int stockOf(String sku) {
 		Integer qty = jdbc.queryForObject("SELECT qty FROM products WHERE sku = ?", Integer.class, sku);
 		return qty == null ? 0 : qty;

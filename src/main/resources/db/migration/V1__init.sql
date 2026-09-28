@@ -14,9 +14,9 @@ CREATE TABLE products (
 CREATE TABLE orders (
     id              UUID         PRIMARY KEY,
     idempotency_key VARCHAR(200) NOT NULL UNIQUE,
-    request_hash    CHAR(64)     NOT NULL,
+    request_hash    VARCHAR(64)  NOT NULL,
     status          VARCHAR(20)  NOT NULL
-                    CHECK (status IN ('new', 'confirmed', 'shipped', 'cancelled')),
+                    CHECK (status IN ('NEW', 'CONFIRMED', 'SHIPPED', 'CANCELLED')),
     total_cents     BIGINT       NOT NULL DEFAULT 0 CHECK (total_cents >= 0),
     created_at      TIMESTAMPTZ  NOT NULL DEFAULT now(),
     updated_at      TIMESTAMPTZ  NOT NULL DEFAULT now()

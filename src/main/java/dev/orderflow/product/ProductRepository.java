@@ -4,9 +4,11 @@ import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
 
@@ -20,5 +22,10 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	@Query("select p from Product p where p.sku in :skus order by p.sku")
 	List<Product> lockBySkus(Collection<String> skus);
+
+	/** То же, но для одного товара — возвращение остатка при отмене заказа. */
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select p from Product p where p.sku = :sku")
+	Optional<Product> lockBySku(@Param("sku") String sku);
 
 }
